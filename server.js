@@ -37,6 +37,16 @@ MongoClient.connect(url,
 
 app.get('/', (req, res) => res.send("hello bujang"))
 
+//sort A-Z
+
+app.get('/users/alpha', (req, res) => {
+  let sort = {name: 1};
+  db.collection("users").find().sort(sort).toArray(function(err, result){
+    if(err) throw err;
+    res.send(result);
+  })
+})
+
 //create new user
 app.post('/', (req, res) => {
   db.collection("users").insertOne(
@@ -102,6 +112,8 @@ app.put('/users/:id', (req, res)=> {
     res.send(result);
   })
 });
+
+
 
 
 app.listen(port, () => console.log(`Listening on port ${port}!`))
