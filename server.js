@@ -2,20 +2,23 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const ObjectID =  require('mongodb').ObjectID;
+const {url, PORT} = require('./envir')
+
 
 //connect mongo
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
 //url
-const url = 'mongodb://localhost:27017';
 //dbname
 const dbName = 'todos';
 let db;
 
 
 const app = express()
-const port = process.env.PORT || 3000
+//dotenv kesini
+
+const port = PORT || 3000
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}))
