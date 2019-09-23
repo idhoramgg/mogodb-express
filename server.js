@@ -37,7 +37,7 @@ MongoClient.connect(url,
 
 app.get('/', (req, res) => res.send("hello bujang"))
 
-//sort A-Z
+// -------------sort A-Z-----------------//
 
 app.get('/users/alpha', (req, res) => {
   let sort = {name: 1};
@@ -47,7 +47,7 @@ app.get('/users/alpha', (req, res) => {
   })
 })
 
-//create new user
+// --------------create new user------------------
 app.post('/', (req, res) => {
   db.collection("users").insertOne(
     {
@@ -68,7 +68,8 @@ app.post('/', (req, res) => {
     }
     );
 })
-//get all data
+
+// ----------------get all data----------------
 app.get('/users', (req, res) => {
   db.collection("users").find().toArray((err, result)=> {
     if(err)throw err;
@@ -76,7 +77,20 @@ app.get('/users', (req, res) => {
   })
 })
 
-//delete data
+// ------------------------get one data ---------------//
+
+app.get('/users/:id',(req, res) => {
+  let id = req.params.id;
+  let id_object = new ObjectID(id);
+
+  db.collection('users').findOne({'_id' : id_object}, (error, result)=> {
+    if(error) throw error;
+    res.send(result);
+  })
+})
+
+// -------------------delete data-------------//
+
 app.delete('/users/:id', (req, res)=> {
   let id = req.params.id;
   let id_object = new ObjectID(id);
@@ -89,7 +103,8 @@ app.delete('/users/:id', (req, res)=> {
   })
 })
 
-//update data
+// --------------------------update data----------//
+
 app.put('/users/:id', (req, res)=> {
   let id = req.params.id;
   let id_object = new ObjectID(id);
