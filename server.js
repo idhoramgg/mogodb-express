@@ -2,41 +2,17 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const ObjectID =  require('mongodb').ObjectID;
-const {url, PORT} = require('./envir')
-
-
-//connect mongo
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-
-//url
-//dbname
-const dbName = 'todos';
-let db;
-
+const db = require('./config/db')
 
 const app = express()
-//dotenv kesini
 
-const port = PORT || 3000
+
+const port = process.env.PORT || 3000
 
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 
-//connect mongoclient
-MongoClient.connect(url,
-  { useNewUrlParser: true ,useUnifiedTopology: true }, function(err, client) {
-  assert.equal(null, err);
-  console.log("Connected successfully to server");
- 
-   db = client.db(dbName);
-
-//  insertUser(db, () => {
-//    console.log("user added");
-//    client.close();
-//  })
-});
 
 app.get('/', (req, res) => res.send("hello bujang"))
 
@@ -131,7 +107,6 @@ app.put('/users/:id', (req, res)=> {
   })
 });
 
-
-
-
-app.listen(port, () => console.log(`Listening on port ${port}!`))
+db.connect(() => {
+  app.listen(port, () => console.log(`udah masuk ke-port ${port} ya bujang!`))
+})
