@@ -20,7 +20,7 @@ app.get('/', (req, res) => res.send("hello bujang"))
 
 app.get('/users/alpha', (req, res) => {
   let sort = {name: 1};
-  db.collection("users").find().sort(sort).toArray(function(err, result){
+  db.get().collection('users').find().sort(sort).toArray(function(err, result){
     if(err) throw err;
     res.send(result);
   })
@@ -28,7 +28,7 @@ app.get('/users/alpha', (req, res) => {
 
 // --------------create new user------------------
 app.post('/', (req, res) => {
-  db.collection("users").insertOne(
+  db.post().collection('users').insertOne(
     {
       //req.body on postman
       name: req.body.name, 
@@ -50,7 +50,7 @@ app.post('/', (req, res) => {
 
 // ----------------get all data----------------
 app.get('/users', (req, res) => {
-  db.collection("users").find().toArray((err, result)=> {
+  db.get().collection('users').find().toArray((err, result)=> {
     if(err)throw err;
     res.send(result)
   })
@@ -62,7 +62,7 @@ app.get('/users/:id',(req, res) => {
   let id = req.params.id;
   let id_object = new ObjectID(id);
 
-  db.collection('users').findOne({'_id' : id_object}, (error, result)=> {
+  db.get().collection('users').findOne({'_id' : id_object}, (error, result)=> {
     if(error) throw error;
     res.send(result);
   })
@@ -74,7 +74,7 @@ app.delete('/users/:id', (req, res)=> {
   let id = req.params.id;
   let id_object = new ObjectID(id);
 
-  db.collection('users').deleteOne({
+  db.delete().collection('users').deleteOne({
     _id : id_object
   }, (err, result)=> {
     if(err)throw err;
@@ -93,7 +93,7 @@ app.put('/users/:id', (req, res)=> {
   let useraddress = req.body.address;
   let useremail = req.body.email;
 
-  db.collection('users').updateOne({
+  db.put().collection('users').updateOne({
     "_id" : id_object
   }, {$set: {
     name: username,

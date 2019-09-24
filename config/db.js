@@ -1,15 +1,15 @@
 //connect mongo
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-
+const dbName = 'todos';
 const {
   url,
   PORT
 } = require('../envir')
 
-const dbName = 'todos';
 
-let db;
+
+let mongodb;
 
 function connect(callback) {
   //connect mongoclient
@@ -20,16 +20,16 @@ function connect(callback) {
     assert.equal(null, err);
     console.log("Connected successfully to server");
 
-    db = client;
+    mongodb = client;
     callback();
   });
 }
 function get() {
-  return db.db(dbName)
+  return mongodb.db(dbName)
 }
 
 function close() {
-  db.close();
+  mongodb.close();
 }
 module.exports = {
   connect,
